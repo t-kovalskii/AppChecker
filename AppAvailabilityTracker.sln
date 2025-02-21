@@ -1,0 +1,99 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{1F123F1A-803F-4B1D-83C6-358A3913B71C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{E6A8E30A-BE73-46D3-99BD-A539D2AB4E50}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppStorage", "AppStorage", "{04C4FF3F-0756-4107-A4DE-E642A386AFB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAvailabilityTracker.Services.AppStorage.Domain", "AppAvailabilityTracker.Services.AppStorage.Domain\AppAvailabilityTracker.Services.AppStorage.Domain.csproj", "{58E2F1C6-5CCC-4D79-9404-6843F38BF7EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAvailabilityTracker.Services.AppStorage.Application", "AppAvailabilityTracker.Services.AppStorage.Application\AppAvailabilityTracker.Services.AppStorage.Application.csproj", "{F6BC5E94-FFF5-4B72-969B-F02EF8A28FBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAvailabilityTracker.Shared.Domain", "AppAvailabilityTracker.Shared.Domain\AppAvailabilityTracker.Shared.Domain.csproj", "{23AF87A6-DC22-4505-BC40-0E63BE840EC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAvailabilityTracker.Shared.DataAccess", "AppAvailabilityTracker.Shared.DataAccess\AppAvailabilityTracker.Shared.DataAccess.csproj", "{457C0346-20DB-4367-835E-D8EB439B297F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAvailabilityTracker.Services.AppStorage.Infrastructure", "AppAvailabilityTracker.Services.AppStorage.Infrastructure\AppAvailabilityTracker.Services.AppStorage.Infrastructure.csproj", "{057D92B5-65DD-4E74-9746-0B6C77CC9CC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAvailabilityTracker.Shared.EventBus", "AppAvailabilityTracker.Shared.EventBus\AppAvailabilityTracker.Shared.EventBus.csproj", "{4036D94C-B892-4CBE-A458-D44AF9DF6817}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppChecker", "AppChecker", "{9DB46C9C-E6D9-446A-8925-B24EEAF963DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAvailabilityTracker.Services.AppChecker.Domain", "AppAvailabilityTracker.Services.AppChecker.Domain\AppAvailabilityTracker.Services.AppChecker.Domain.csproj", "{07CD0B31-E9A2-450B-B54A-C0A152C0101C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAvailabilityTracker.Services.AppChecker.Application", "AppAvailabilityTracker.Services.AppChecker.Application\AppAvailabilityTracker.Services.AppChecker.Application.csproj", "{02200557-ED5D-4173-BAD0-767B11BD872F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAvailabilityTracker.Services.AppChecker.Infrastructure", "AppAvailabilityTracker.Services.AppChecker.Infrastructure\AppAvailabilityTracker.Services.AppChecker.Infrastructure.csproj", "{8B316E88-E66D-4086-94DA-B237B6A6CF56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAvailabilityTracker.Services.AppChecker.Web", "AppAvailabilityTracker.Services.AppChecker.Web\AppAvailabilityTracker.Services.AppChecker.Web.csproj", "{126897B1-29F5-4CE8-BDF2-B214DD92A8AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAvailabilityTracker.Services.AppStorage.Web", "AppAvailabilityTracker.Services.AppStorage.Web\AppAvailabilityTracker.Services.AppStorage.Web.csproj", "{DBA7D05D-0981-4478-9ECD-CFA355620DA6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{04C4FF3F-0756-4107-A4DE-E642A386AFB6} = {1F123F1A-803F-4B1D-83C6-358A3913B71C}
+		{58E2F1C6-5CCC-4D79-9404-6843F38BF7EF} = {04C4FF3F-0756-4107-A4DE-E642A386AFB6}
+		{F6BC5E94-FFF5-4B72-969B-F02EF8A28FBA} = {04C4FF3F-0756-4107-A4DE-E642A386AFB6}
+		{23AF87A6-DC22-4505-BC40-0E63BE840EC0} = {E6A8E30A-BE73-46D3-99BD-A539D2AB4E50}
+		{457C0346-20DB-4367-835E-D8EB439B297F} = {E6A8E30A-BE73-46D3-99BD-A539D2AB4E50}
+		{057D92B5-65DD-4E74-9746-0B6C77CC9CC5} = {04C4FF3F-0756-4107-A4DE-E642A386AFB6}
+		{4036D94C-B892-4CBE-A458-D44AF9DF6817} = {E6A8E30A-BE73-46D3-99BD-A539D2AB4E50}
+		{9DB46C9C-E6D9-446A-8925-B24EEAF963DC} = {1F123F1A-803F-4B1D-83C6-358A3913B71C}
+		{07CD0B31-E9A2-450B-B54A-C0A152C0101C} = {9DB46C9C-E6D9-446A-8925-B24EEAF963DC}
+		{02200557-ED5D-4173-BAD0-767B11BD872F} = {9DB46C9C-E6D9-446A-8925-B24EEAF963DC}
+		{8B316E88-E66D-4086-94DA-B237B6A6CF56} = {9DB46C9C-E6D9-446A-8925-B24EEAF963DC}
+		{126897B1-29F5-4CE8-BDF2-B214DD92A8AE} = {9DB46C9C-E6D9-446A-8925-B24EEAF963DC}
+		{DBA7D05D-0981-4478-9ECD-CFA355620DA6} = {04C4FF3F-0756-4107-A4DE-E642A386AFB6}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{58E2F1C6-5CCC-4D79-9404-6843F38BF7EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58E2F1C6-5CCC-4D79-9404-6843F38BF7EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58E2F1C6-5CCC-4D79-9404-6843F38BF7EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58E2F1C6-5CCC-4D79-9404-6843F38BF7EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6BC5E94-FFF5-4B72-969B-F02EF8A28FBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6BC5E94-FFF5-4B72-969B-F02EF8A28FBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6BC5E94-FFF5-4B72-969B-F02EF8A28FBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6BC5E94-FFF5-4B72-969B-F02EF8A28FBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23AF87A6-DC22-4505-BC40-0E63BE840EC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23AF87A6-DC22-4505-BC40-0E63BE840EC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23AF87A6-DC22-4505-BC40-0E63BE840EC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23AF87A6-DC22-4505-BC40-0E63BE840EC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{457C0346-20DB-4367-835E-D8EB439B297F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{457C0346-20DB-4367-835E-D8EB439B297F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{457C0346-20DB-4367-835E-D8EB439B297F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{457C0346-20DB-4367-835E-D8EB439B297F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{057D92B5-65DD-4E74-9746-0B6C77CC9CC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{057D92B5-65DD-4E74-9746-0B6C77CC9CC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{057D92B5-65DD-4E74-9746-0B6C77CC9CC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{057D92B5-65DD-4E74-9746-0B6C77CC9CC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4036D94C-B892-4CBE-A458-D44AF9DF6817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4036D94C-B892-4CBE-A458-D44AF9DF6817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4036D94C-B892-4CBE-A458-D44AF9DF6817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4036D94C-B892-4CBE-A458-D44AF9DF6817}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07CD0B31-E9A2-450B-B54A-C0A152C0101C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07CD0B31-E9A2-450B-B54A-C0A152C0101C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07CD0B31-E9A2-450B-B54A-C0A152C0101C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07CD0B31-E9A2-450B-B54A-C0A152C0101C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02200557-ED5D-4173-BAD0-767B11BD872F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02200557-ED5D-4173-BAD0-767B11BD872F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02200557-ED5D-4173-BAD0-767B11BD872F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02200557-ED5D-4173-BAD0-767B11BD872F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B316E88-E66D-4086-94DA-B237B6A6CF56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B316E88-E66D-4086-94DA-B237B6A6CF56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B316E88-E66D-4086-94DA-B237B6A6CF56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B316E88-E66D-4086-94DA-B237B6A6CF56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{126897B1-29F5-4CE8-BDF2-B214DD92A8AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{126897B1-29F5-4CE8-BDF2-B214DD92A8AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{126897B1-29F5-4CE8-BDF2-B214DD92A8AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{126897B1-29F5-4CE8-BDF2-B214DD92A8AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBA7D05D-0981-4478-9ECD-CFA355620DA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBA7D05D-0981-4478-9ECD-CFA355620DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBA7D05D-0981-4478-9ECD-CFA355620DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBA7D05D-0981-4478-9ECD-CFA355620DA6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

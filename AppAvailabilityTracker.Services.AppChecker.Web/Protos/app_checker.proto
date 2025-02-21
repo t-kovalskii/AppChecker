@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "AppAvailabilityTracker.Services.AppChecker.Web.Grpc";
+
+package app_checker;
+
+message CheckAndScheduleRequest {
+  string application_id = 1;
+  string store_link = 2;
+  int32 interval_minutes = 3;
+}
+
+message CheckAndScheduleResponse {
+  bool is_available = 1;
+}
+
+service AppCheckerService {
+  rpc PerformInitialCheckAndSchedule (CheckAndScheduleRequest) returns (CheckAndScheduleResponse);
+}

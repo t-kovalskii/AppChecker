@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Cronos" Version="0.9.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AppAvailabilityTracker.Services.AppChecker.Domain\AppAvailabilityTracker.Services.AppChecker.Domain.csproj" />
+      <ProjectReference Include="..\AppAvailabilityTracker.Shared.Domain\AppAvailabilityTracker.Shared.Domain.csproj" />
+      <ProjectReference Include="..\AppAvailabilityTracker.Shared.EventBus\AppAvailabilityTracker.Shared.EventBus.csproj" />
+    </ItemGroup>
+
+</Project>

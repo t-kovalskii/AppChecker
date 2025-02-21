@@ -1,0 +1,6 @@
+@AppAvailabilityTracker.Services.AppStorage.Web_HostAddress = http://localhost:5043
+
+GET {{AppAvailabilityTracker.Services.AppStorage.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
