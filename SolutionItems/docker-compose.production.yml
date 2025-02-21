@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  app_storage:
+    build:
+      context: .
+      dockerfile: AppAvailabilityTracker.Services.AppStorage.Web/Dockerfile
+      args:
+        BUILD_CONFIGURATION: Release
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      urls__GooglePlayAppCheckerServiceUrl: "http://google_play_market_app_checker:8080"
+      urls__AppStoreAppCheckerServiceUrl: "http://app_store_app_checker:8080"
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - "80:8080"
+      - "443:8081"
+
+  google_play_market_app_checker:
+    build:
+      context: .
+      dockerfile: Dockerfile.AppChecker
+      args:
+        BUILD_CONFIGURATION: Release
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - "81:8080"
+      - "444:8081"
+
+  app_store_app_checker:
+    build:
+      context: .
+      dockerfile: Dockerfile.AppChecker
+      args:
+        BUILD_CONFIGURATION: Release
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - "82:8080"
+      - "445:8081"
+
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_prod:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+volumes:
+  pgdata_prod:
