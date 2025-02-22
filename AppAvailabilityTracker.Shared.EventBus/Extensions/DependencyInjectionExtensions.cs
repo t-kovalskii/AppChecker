@@ -16,7 +16,7 @@ public static class DependencyInjectionExtensions
         services.Configure<EventBusConfiguration>(configuration.GetSection(nameof(EventBusConfiguration)));
         
         services.AddSingleton<IEventBus, RabbitMqEventBus>();
-        services.AddHostedService(provider => provider.GetRequiredService<RabbitMqEventBus>());
+        services.AddHostedService<RabbitMqEventBus>();
 
         return new EventBusBuilder(services);
     }

@@ -1,31 +1,36 @@
 version: '3.8'
 
 services:
-  app_storage:
+  app-storage:
     build:
       context: .
-      dockerfile: AppAvailabilityTracker.Services.AppStorage.Web/Dockerfile
+      dockerfile: ../AppAvailabilityTracker.Services.AppStorage.Web/Dockerfile
       args:
         BUILD_CONFIGURATION: Release
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      urls__GooglePlayAppCheckerServiceUrl: "http://google_play_market_app_checker:8080"
-      urls__AppStoreAppCheckerServiceUrl: "http://app_store_app_checker:8080"
+      urls__GooglePlayAppCheckerServiceUrl: "http://google-play-market-app-checker:8080"
+      urls__AppStoreAppCheckerServiceUrl: "http://app-store-app-checker:8080"
+      EventBusConfiguration__Host: "rabbitmq"
     depends_on:
       - postgres
       - rabbitmq
+      - google-play-market-app-checker
+      - app-store-app-checker 
     ports:
       - "80:8080"
       - "443:8081"
 
-  google_play_market_app_checker:
+  google-play-market-app-checker:
     build:
       context: .
-      dockerfile: Dockerfile.AppChecker
+      dockerfile: ../AppAvailabilityTracker.Services.AppChecker.Web/Dockerfile
       args:
         BUILD_CONFIGURATION: Release
+        ServiceConfiguration__Name: "GooglePlayMarketChecker"
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+      EventBusConfiguration__Host: "rabbitmq"
     depends_on:
       - postgres
       - rabbitmq
@@ -33,14 +38,16 @@ services:
       - "81:8080"
       - "444:8081"
 
-  app_store_app_checker:
+  app-store-app-checker:
     build:
       context: .
-      dockerfile: Dockerfile.AppChecker
+      dockerfile: ../AppAvailabilityTracker.Services.AppChecker.Web/Dockerfile
       args:
         BUILD_CONFIGURATION: Release
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+      ServiceConfiguration__Name: "AppStoreChecker"
+      EventBusConfiguration__Host: "rabbitmq"
     depends_on:
       - postgres
       - rabbitmq

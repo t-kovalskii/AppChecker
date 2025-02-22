@@ -2,10 +2,15 @@ using AppAvailabilityTracker.Services.AppChecker.Application.Interfaces;
 using AppAvailabilityTracker.Services.AppChecker.Domain.Repositories;
 using AppAvailabilityTracker.Services.AppChecker.Infrastructure.Context;
 using AppAvailabilityTracker.Services.AppChecker.Infrastructure.Jobs;
+using AppAvailabilityTracker.Services.AppChecker.Infrastructure.Mapping;
 using AppAvailabilityTracker.Services.AppChecker.Infrastructure.Repositories;
 using AppAvailabilityTracker.Services.AppChecker.Infrastructure.Services;
+
+using AppAvailabilityTracker.Shared.Domain.Mapping;
+
 using Hangfire;
 using Hangfire.MemoryStorage;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,6 +29,8 @@ public static class DependencyInjectionExtensions
         {
             options.UseNpgsql(configuration.GetConnectionString(ConnectionStringName));
         });
+
+        services.AddMapper<AvailabilityCheckModelMapperFactory>();
 
         services.AddHangfire(config => config.UseMemoryStorage());
         services.AddHangfireServer();

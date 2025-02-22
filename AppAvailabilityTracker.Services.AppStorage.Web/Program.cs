@@ -3,11 +3,14 @@ using AppAvailabilityTracker.Services.AppStorage.Application.IntegrationEventHan
 using AppAvailabilityTracker.Services.AppStorage.Application.IntegrationEvents;
 using AppAvailabilityTracker.Services.AppStorage.Infrastructure.Extensions;
 
+using AppAvailabilityTracker.Shared.Domain.Configuration;
 using AppAvailabilityTracker.Shared.EventBus.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
+
+builder.Services.Configure<ServiceConfiguration>(builder.Configuration.GetSection(nameof(ServiceConfiguration)));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

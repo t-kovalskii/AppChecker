@@ -1,5 +1,6 @@
 using AppAvailabilityTracker.Services.AppStorage.Application.Configuration;
 using AppAvailabilityTracker.Services.AppStorage.Application.DomainEventHandlers;
+using AppAvailabilityTracker.Services.AppStorage.Application.Helpers;
 using AppAvailabilityTracker.Services.AppStorage.Application.Interfaces;
 using AppAvailabilityTracker.Services.AppStorage.Application.Services;
 using AppAvailabilityTracker.Services.AppStorage.Domain.DomainEvents;
@@ -18,6 +19,8 @@ public static class DependencyInjectionExtensions
         services.AddDomainEventsDispatching();
         services.AddDomainEventHandler<ApplicationAddedDomainEvent, ApplicationAddedDomainEventHandler>();
         services.AddDomainEventHandler<ApplicationDeletedDomainEvent, ApplicationDeletedDomainEventHandler>();
+        
+        services.AddScoped<ExternalStoreServiceResolver>();
 
         services.Configure<ApplicationConfiguration>(configuration.GetSection(nameof(ApplicationConfiguration)));
 

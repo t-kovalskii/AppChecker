@@ -5,11 +5,14 @@ using AppAvailabilityTracker.Services.AppChecker.Domain.Repositories;
 using AppAvailabilityTracker.Services.AppChecker.Infrastructure.Extensions;
 using AppAvailabilityTracker.Services.AppChecker.Web.Services;
 
+using AppAvailabilityTracker.Shared.Domain.Configuration;
 using AppAvailabilityTracker.Shared.EventBus.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddGrpc();
+
+builder.Services.Configure<ServiceConfiguration>(builder.Configuration.GetSection(nameof(ServiceConfiguration)));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
