@@ -3,14 +3,15 @@ version: '3.8'
 services:
   app-storage:
     build:
-      context: .
-      dockerfile: ../AppAvailabilityTracker.Services.AppStorage.Web/Dockerfile
+      context: AppAvailabilityTracker.Services.AppStorage.Web
+      dockerfile: Dockerfile
       args:
         BUILD_CONFIGURATION: Debug
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       urls__GooglePlayAppCheckerServiceUrl: "http://google-play-market-app-checker:8080"
       urls__AppStoreAppCheckerServiceUrl: "http://app-store-app-checker:8080"
+      ConnectionStrings__AppStorageConnection: "Server=postgres;Port=5432;Database=application_store;Username=postgres;Password=postgres;"
       EventBusConfiguration__Host: "rabbitmq"
     depends_on:
       - postgres
@@ -23,14 +24,15 @@ services:
 
   google-play-market-checker:
     build:
-      context: .
-      dockerfile: ../AppAvailabilityTracker.Services.AppChecker.Web/Dockerfile
+      context: AppAvailabilityTracker.Services.AppChecker.Web
+      dockerfile: Dockerfile
       args:
         BUILD_CONFIGURATION: Debug
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ServiceConfiguration__Name: "GooglePlayMarketChecker"
       EventBusConfiguration__Host: "rabbitmq"
+      ConnectionStrings__AppStorageConnection: "Server=postgres;Port=5432;Database=application_store;Username=postgres;Password=postgres;"
     depends_on:
       - postgres
       - rabbitmq
@@ -40,14 +42,15 @@ services:
 
   app-store-checker:
     build:
-      context: .
-      dockerfile: ../AppAvailabilityTracker.Services.AppChecker.Web/Dockerfile
+      context: AppAvailabilityTracker.Services.AppChecker.Web
+      dockerfile: Dockerfile
       args:
         BUILD_CONFIGURATION: Debug
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ServiceConfiguration__Name: "AppStoreChecker"
       EventBusConfiguration__Host: "rabbitmq"
+      ConnectionStrings__AppStorageConnection: "Server=postgres;Port=5432;Database=application_store;Username=postgres;Password=postgres;"
     depends_on:
       - postgres
       - rabbitmq

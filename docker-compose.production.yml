@@ -3,33 +3,35 @@ version: '3.8'
 services:
   app-storage:
     build:
-      context: .
-      dockerfile: ../AppAvailabilityTracker.Services.AppStorage.Web/Dockerfile
+      context: AppAvailabilityTracker.Services.AppStorage.Web
+      dockerfile: Dockerfile
       args:
         BUILD_CONFIGURATION: Release
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       urls__GooglePlayAppCheckerServiceUrl: "http://google-play-market-app-checker:8080"
       urls__AppStoreAppCheckerServiceUrl: "http://app-store-app-checker:8080"
+      ConnectionStrings__AppStorageConnection: "Server=postgres;Port=5432;Database=application_store;Username=postgres;Password=postgres;"
       EventBusConfiguration__Host: "rabbitmq"
     depends_on:
       - postgres
       - rabbitmq
-      - google-play-market-app-checker
-      - app-store-app-checker 
+      - google-play-market-checker
+      - app-store-checker
     ports:
       - "80:8080"
       - "443:8081"
 
-  google-play-market-app-checker:
+  google-play-market-checker:
     build:
-      context: .
-      dockerfile: ../AppAvailabilityTracker.Services.AppChecker.Web/Dockerfile
+      context: AppAvailabilityTracker.Services.AppChecker.Web
+      dockerfile: Dockerfile
       args:
         BUILD_CONFIGURATION: Release
         ServiceConfiguration__Name: "GooglePlayMarketChecker"
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__AppStorageConnection: "Server=postgres;Port=5432;Database=application_store;Username=postgres;Password=postgres;"
       EventBusConfiguration__Host: "rabbitmq"
     depends_on:
       - postgres
@@ -38,15 +40,16 @@ services:
       - "81:8080"
       - "444:8081"
 
-  app-store-app-checker:
+  app-store-checker:
     build:
-      context: .
-      dockerfile: ../AppAvailabilityTracker.Services.AppChecker.Web/Dockerfile
+      context: AppAvailabilityTracker.Services.AppChecker.Web
+      dockerfile: Dockerfile
       args:
         BUILD_CONFIGURATION: Release
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ServiceConfiguration__Name: "AppStoreChecker"
+      ConnectionStrings__AppStorageConnection: "Server=postgres;Port=5432;Database=application_store;Username=postgres;Password=postgres;"
       EventBusConfiguration__Host: "rabbitmq"
     depends_on:
       - postgres

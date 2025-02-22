@@ -1,3 +1,4 @@
+using System.Net.Sockets;
 using AppAvailabilityTracker.Shared.EventBus.Abstractions;
 using AppAvailabilityTracker.Shared.EventBus.Attributes;
 using AppAvailabilityTracker.Shared.EventBus.Events;
@@ -14,8 +15,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
+using Polly;
+using Polly.Retry;
+
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RabbitMQ.Client.Exceptions;
 
 namespace AppAvailabilityTracker.Shared.EventBus.Services;
 
@@ -28,6 +33,8 @@ public class RabbitMqEventBus(
     IHostedService
 {
     private const string ExchangeName = "EventBus";
+    
+    private readonly ResiliencePipeline _pipeline = CreateRetryPipeline();
     
     private readonly ServiceConfiguration _serviceConfiguration = serviceConfiguration.Value;
     private readonly EventBusOptions _eventBusOptions = eventBusOptions.Value;
@@ -67,8 +74,12 @@ public class RabbitMqEventBus(
         {
             try
             {
-                _connection = await connectionFactory.EstablishConnectionAsync();
-                if (!_connection.IsOpen)
+                await _pipeline.Execute(async () =>
+                {
+                    _connection = await connectionFactory.EstablishConnectionAsync();
+                });
+                
+                if (_connection is null || !_connection.IsOpen)
                 {
                     logger.LogError("Failed to connect to RabbitMQ");
                     return;
@@ -163,5 +174,24 @@ public class RabbitMqEventBus(
     public Task StopAsync(CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
+    }
+    
+    private static ResiliencePipeline CreateRetryPipeline(int retryCount = 3)
+    {
+        var retryOptions = new RetryStrategyOptions
+        {
+            ShouldHandle = new PredicateBuilder().Handle<BrokerUnreachableException>().Handle<SocketException>(),
+            MaxRetryAttempts = retryCount,
+            DelayGenerator = (context) => ValueTask.FromResult(GenerateDelay(context.AttemptNumber))
+        };
+
+        return new ResiliencePipelineBuilder()
+            .AddRetry(retryOptions)
+            .Build();
+
+        static TimeSpan? GenerateDelay(int attempt)
+        {
+            return TimeSpan.FromSeconds(attempt);
+        }
     }
 }
