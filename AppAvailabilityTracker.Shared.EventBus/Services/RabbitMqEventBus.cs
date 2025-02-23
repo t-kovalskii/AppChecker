@@ -46,26 +46,33 @@ public class RabbitMqEventBus(
     
     public async Task PublishAsync(IntegrationEvent @event)
     {
+        logger.LogInformation("Publishing integration event {EventName}", @event.GetType().Name);
+
         var routingKey = @event.GetType().GetCustomAttribute<RoutingKeyAttribute>()?.RoutingKey;
         if (routingKey is null)
         {
-            logger.LogWarning("Event '{eventName}' has no routing key", @event.GetType().Name);
+            logger.LogWarning("Event '{EventName}' has no routing key", @event.GetType().Name);
             return;
         }
 
         _connection ??= await connectionFactory.EstablishConnectionAsync();
-        
+        logger.LogInformation("Established connection to RabbitMQ");
+
         var channel = await _connection.CreateChannelAsync();
-        
+        logger.LogInformation("Created channel on RabbitMQ connection");
+
         await channel.ExchangeDeclareAsync(exchange: ExchangeName, type: ExchangeType.Direct);
+        logger.LogInformation("Declared exchange '{ExchangeName}' on RabbitMQ", ExchangeName);
 
         var eventSerialized = JsonConvert.SerializeObject(@event);
         var body = Encoding.UTF8.GetBytes(eventSerialized);
+        logger.LogInformation("Serialized integration event to JSON: {Event}", eventSerialized);
 
         await channel.BasicPublishAsync(exchange: ExchangeName,
             routingKey: routingKey,
             body: body,
             mandatory: false);
+        logger.LogInformation("Published integration event to RabbitMQ with routing key '{RoutingKey}'", routingKey);
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -74,10 +81,10 @@ public class RabbitMqEventBus(
         {
             try
             {
-                await _pipeline.Execute(async () =>
+                await _pipeline.ExecuteAsync(async _ =>
                 {
                     _connection = await connectionFactory.EstablishConnectionAsync();
-                });
+                }, cancellationToken);
                 
                 if (_connection is null || !_connection.IsOpen)
                 {
@@ -150,27 +157,56 @@ public class RabbitMqEventBus(
 
     private async Task ProcessEvent(string eventName, string body)
     {
+        logger.LogInformation("Processing event {EventName} with body {Body}", eventName, body);
+
         await using var scope = serviceProvider.CreateAsyncScope();
         if (!_eventBusOptions.Subscriptions.TryGetValue(eventName, out var eventType))
         {
-            logger.LogWarning("Cannot obtain event type for event name '{eventName}'", eventName);
+            logger.LogWarning("Cannot obtain event type for event name '{EventName}'", eventName);
             return;
         }
+
+        logger.LogInformation("Deserializing event body to type {EventType}", eventType);
 
         if (JsonConvert.DeserializeObject(body, eventType) is not IntegrationEvent integrationEvent)
         {
-            logger.LogWarning("Cannot deserialize event body '{body}' to integration event '{eventName}'", body, eventName);
+            logger.LogError("Cannot deserialize event body '{Body}' to integration event '{EventName}'", body, eventName);
             return;
         }
-        
-        var integrationEventHandlers = scope.ServiceProvider.GetKeyedServices<IIntegrationEventHandler>(eventType);
+
+        logger.LogInformation("Event body deserialized to {EventType}", integrationEvent.GetType().Name);
+
+        var integrationEventHandlers = scope.ServiceProvider.GetKeyedServices<IIntegrationEventHandler>(eventType)
+            .ToList();
+
+        logger.LogInformation("Found {HandlerCount} handlers for event {EventType}",
+            integrationEventHandlers.Count,
+            eventType.Name);
 
         foreach (var integrationEventHandler in integrationEventHandlers)
         {
-            await integrationEventHandler.Handle(integrationEvent);
+            try
+            {
+                await integrationEventHandler.Handle(integrationEvent);
+                logger.LogInformation("Handled event {EventType} with handler {HandlerType}",
+                    integrationEvent.GetType()
+                        .Name,
+                    integrationEventHandler.GetType()
+                        .Name);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex,
+                    "Error handling event {EventType} with handler {HandlerType}",
+                    integrationEvent.GetType()
+                        .Name,
+                    integrationEventHandler.GetType()
+                        .Name);
+            }
         }
-    }
 
+        logger.LogInformation("Finished processing event {EventName}", eventName);
+    }
     public Task StopAsync(CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
@@ -191,7 +227,7 @@ public class RabbitMqEventBus(
 
         static TimeSpan? GenerateDelay(int attempt)
         {
-            return TimeSpan.FromSeconds(attempt);
+            return TimeSpan.FromSeconds(Math.Pow(2, attempt));
         }
     }
 }

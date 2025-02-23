@@ -23,7 +23,7 @@ public class DomainEventDispatcherService(
                 foreach (var domainEvent in domainEvents)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    await domainEventDispatcher.DispatchAsync(domainEvent);
+                    await domainEventDispatcher.DispatchAsync(domainEvent, cancellationToken);
                 }
             }
 

@@ -5,24 +5,27 @@ using AppAvailabilityTracker.Shared.DataAccess.Interfaces;
 using AppAvailabilityTracker.Shared.Domain.Mapping;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace AppAvailabilityTracker.Services.AppStorage.Infrastructure.Repository;
 
 public class ApplicationRepository(
     ApplicationStoreContext applicationStoreContext,
-    IModelMapper modelMapper) : IApplicationRepository
+    IModelMapper modelMapper, ILogger<ApplicationRepository> logger) : IApplicationRepository
 {
     public IUnitOfWork UnitOfWork { get; } = applicationStoreContext;
     
     public async Task<IEnumerable<ApplicationDomain>> GetAllAsync()
     {
-        var applications = await applicationStoreContext.Applications.ToListAsync();
+        var applications = await applicationStoreContext.Applications.AsNoTracking().ToListAsync();
         return modelMapper.Map<ApplicationDomain>(applications);
     }
 
     public async Task<ApplicationDomain?> GetByIdAsync(Guid id)
     {
-        var application = await applicationStoreContext.Applications.FirstOrDefaultAsync(a => a.Id == id);
+        var application = await applicationStoreContext.Applications.AsNoTracking()
+            .FirstOrDefaultAsync(a => a.Id == id);
         return application is not null ? modelMapper.Map<ApplicationDomain>(application) : null;
     }
 
@@ -37,7 +40,13 @@ public class ApplicationRepository(
     public Task<ApplicationDomain> UpdateAsync(ApplicationDomain entity)
     {
         var applicationEntity = modelMapper.Map<Models.Application>(entity);
+        
+        logger.LogInformation("Updating application {ApplicationId}", applicationEntity.Id);
+        logger.LogInformation("Result domain: {ResultDomain}; Entity: {ResultEntity}", entity.IsAvailable, applicationEntity.IsAvailable);
+        
         applicationStoreContext.Applications.Update(applicationEntity);
+        
+        logger.LogInformation("Updated application {ApplicationId}", applicationEntity.Id);
         
         return Task.FromResult(entity);
     }

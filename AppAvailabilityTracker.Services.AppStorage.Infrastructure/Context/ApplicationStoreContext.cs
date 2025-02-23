@@ -1,34 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using AppAvailabilityTracker.Services.AppStorage.Infrastructure.Models;
-using AppAvailabilityTracker.Shared.Domain.Events;
+﻿using AppAvailabilityTracker.Shared.Domain.Events;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+
 using Microsoft.Extensions.Logging;
 
 namespace AppAvailabilityTracker.Services.AppStorage.Infrastructure.Context;
 
 public partial class ApplicationStoreContext : DbContext
 {
+    private const string ConnectionStringName = "DefaultConnection";
+    
     public ApplicationStoreContext()
     {
     }
 
     private readonly ILogger<ApplicationStoreContext> _logger;
-    private readonly IDomainEventDispatcher _domainEventDispatcher;
+    private readonly IConfiguration _configuration;
     private readonly DomainEventDispatcherService _domainEventDispatcherService;
 
     public ApplicationStoreContext(DbContextOptions<ApplicationStoreContext> options,
         DomainEventDispatcherService domainEventDispatcherService,
-        ILogger<ApplicationStoreContext> logger,
-        IDomainEventDispatcher domainEventDispatcher)
+        IConfiguration configuration,
+        ILogger<ApplicationStoreContext> logger)
         : base(options)
     {
         _logger = logger;
-        _domainEventDispatcher = domainEventDispatcher;
+        _configuration = configuration;
         _domainEventDispatcherService = domainEventDispatcherService;
     }
 
     public virtual DbSet<Models.Application> Applications { get; set; }
+    
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseNpgsql(_configuration.GetConnectionString(ConnectionStringName));
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

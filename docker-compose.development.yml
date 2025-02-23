@@ -9,8 +9,8 @@ services:
         BUILD_CONFIGURATION: Debug
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      urls__GooglePlayAppCheckerServiceUrl: "http://google-play-market-app-checker:8080"
-      urls__AppStoreAppCheckerServiceUrl: "http://app-store-app-checker:8080"
+      urls__GooglePlayAppCheckerServiceUrl: "http://google-play-market-checker:8080"
+      urls__AppStoreAppCheckerServiceUrl: "http://app-store-checker:8080"
       ConnectionStrings__AppStorageConnection: "Server=postgres;Port=5432;Database=application_store;Username=postgres;Password=postgres;"
       EventBusConfiguration__Host: "rabbitmq"
     depends_on:
@@ -32,7 +32,7 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ServiceConfiguration__Name: "GooglePlayMarketChecker"
       EventBusConfiguration__Host: "rabbitmq"
-      ConnectionStrings__AppStorageConnection: "Server=postgres;Port=5432;Database=application_store;Username=postgres;Password=postgres;"
+      ConnectionStrings__AppCheckerConnection: "Server=postgres;Port=5432;Database=application_checks;Username=postgres;Password=postgres;"
     depends_on:
       - postgres
       - rabbitmq
@@ -50,7 +50,7 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ServiceConfiguration__Name: "AppStoreChecker"
       EventBusConfiguration__Host: "rabbitmq"
-      ConnectionStrings__AppStorageConnection: "Server=postgres;Port=5432;Database=application_store;Username=postgres;Password=postgres;"
+      ConnectionStrings__AppCheckerConnection: "Server=postgres;Port=5432;Database=application_checks;Username=postgres;Password=postgres;"
     depends_on:
       - postgres
       - rabbitmq

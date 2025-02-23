@@ -18,6 +18,7 @@ public class AvailabilityCheckRepository(
     {
         var entities = await availabilityCheckContext.AvailabilityChecks
             .FromSqlRaw("SELECT * FROM availability_checks")
+            .AsNoTracking()
             .ToListAsync();
         
         return modelMapper.Map<AvailabilityCheck>(entities);
@@ -27,6 +28,7 @@ public class AvailabilityCheckRepository(
     {
         var entity = await availabilityCheckContext.AvailabilityChecks
             .FromSqlRaw("SELECT * FROM availability_checks WHERE id = {0}", id)
+            .AsNoTracking()
             .FirstOrDefaultAsync();
         
         return entity is null ? null : modelMapper.Map<AvailabilityCheck>(entity);

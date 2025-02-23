@@ -6,6 +6,7 @@ using AppAvailabilityTracker.Services.AppChecker.Infrastructure.Mapping;
 using AppAvailabilityTracker.Services.AppChecker.Infrastructure.Repositories;
 using AppAvailabilityTracker.Services.AppChecker.Infrastructure.Services;
 
+using AppAvailabilityTracker.Shared.DataAccess;
 using AppAvailabilityTracker.Shared.Domain.Mapping;
 
 using Hangfire;
@@ -29,6 +30,8 @@ public static class DependencyInjectionExtensions
         {
             options.UseNpgsql(configuration.GetConnectionString(ConnectionStringName));
         });
+        
+        services.AddHostedService(sp => new MigrationHostedService<AvailabilityCheckContext>(sp));
 
         services.AddMapper<AvailabilityCheckModelMapperFactory>();
 

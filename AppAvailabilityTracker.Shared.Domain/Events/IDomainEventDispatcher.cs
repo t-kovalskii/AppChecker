@@ -2,5 +2,5 @@ namespace AppAvailabilityTracker.Shared.Domain.Events;
 
 public interface IDomainEventDispatcher
 {
-    Task DispatchAsync(DomainEvent domainEvent);
+    Task DispatchAsync(DomainEvent domainEvent, CancellationToken cancellationToken);
 }

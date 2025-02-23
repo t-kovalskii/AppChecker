@@ -17,7 +17,7 @@ public static class DependencyInjectionExtensions
         where TDomainEvent : DomainEvent
         where TDomainEventHandler : class, IDomainEventHandler<TDomainEvent>
     {
-        services.AddTransient<IDomainEventHandler<TDomainEvent>, TDomainEventHandler>();
+        services.AddKeyedTransient<IDomainEventHandler, TDomainEventHandler>(typeof(TDomainEvent));
         return services;
     }
 }

@@ -9,8 +9,8 @@ public partial class ApplicationStoreContext : IUnitOfWork
     {
         _logger.LogInformation("Saving entities");
         
-        await _domainEventDispatcherService.DispatchDomainEventsAsync(cancellationToken);
         await base.SaveChangesAsync(cancellationToken);
+        await _domainEventDispatcherService.DispatchDomainEventsAsync(cancellationToken);
         
         _logger.LogInformation("Entities saved");
     }

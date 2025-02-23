@@ -10,4 +10,10 @@
       <ProjectReference Include="..\AppAvailabilityTracker.Shared.Domain\AppAvailabilityTracker.Shared.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.2" />
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
+    </ItemGroup>
+
 </Project>

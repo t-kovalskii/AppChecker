@@ -1,9 +1,11 @@
 using AppAvailabilityTracker.Services.AppStorage.Application.IntegrationEvents;
 using AppAvailabilityTracker.Services.AppStorage.Domain.Repositories;
+using AppAvailabilityTracker.Shared.EventBus.Attributes;
 using AppAvailabilityTracker.Shared.EventBus.Events;
 
 namespace AppAvailabilityTracker.Services.AppStorage.Application.IntegrationEventHandlers;
 
+[RoutingKey("check.performed")]
 public class CheckPerformedIntegrationEventHandler(
     IApplicationRepository applicationRepository) : IIntegrationEventHandler<CheckPerformedIntegrationEvent>
 {
@@ -18,5 +20,6 @@ public class CheckPerformedIntegrationEventHandler(
         application.UpdateAvailability(@event.CheckResult, @event.CheckTime);
         
         await applicationRepository.UpdateAsync(application);
+        await applicationRepository.UnitOfWork.SaveEntitiesAsync();
     }
 }

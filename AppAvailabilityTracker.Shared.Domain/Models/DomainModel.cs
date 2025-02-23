@@ -20,7 +20,7 @@ public abstract class DomainModel
         RegisteredAggregates.Value ??= new HashSet<DomainModel>();
     }
 
-    public void AddDomainEvent(DomainEvent domainEvent)
+    protected void AddDomainEvent(DomainEvent domainEvent)
     {
         _domainEvents.Add(domainEvent);
         RegisteredAggregates.Value?.Add(this);

@@ -1,12 +1,15 @@
 using AppAvailabilityTracker.Services.AppChecker.Web.Grpc;
 
+using AppAvailabilityTracker.Services.AppStorage.Application.Interfaces;
 using AppAvailabilityTracker.Services.AppStorage.Domain.Enums;
 using AppAvailabilityTracker.Services.AppStorage.Domain.Repositories;
 using AppAvailabilityTracker.Services.AppStorage.Infrastructure.Configuration;
 using AppAvailabilityTracker.Services.AppStorage.Infrastructure.Context;
 using AppAvailabilityTracker.Services.AppStorage.Infrastructure.Mapping;
 using AppAvailabilityTracker.Services.AppStorage.Infrastructure.Repository;
+using AppAvailabilityTracker.Services.AppStorage.Infrastructure.Services;
 
+using AppAvailabilityTracker.Shared.DataAccess;
 using AppAvailabilityTracker.Shared.Domain.Mapping;
 
 using Microsoft.Extensions.Configuration;
@@ -30,20 +33,25 @@ public static class DependencyInjectionExtensions
         {
             options.UseNpgsql(configuration.GetConnectionString(ConnectionStringName));
         });
+        
+        services.AddHostedService(sp => new MigrationHostedService<ApplicationStoreContext>(sp));
 
         services.AddGrpcClient<AppCheckerService.AppCheckerServiceClient>(StoreType.GooglePlayMarket.ToString(),
             options =>
             {
-                var urlsConfiguration = configuration.Get<UrlConfiguration>()!;
+                var urlsConfiguration = configuration.GetSection(UrlsConfigurationPrefix).Get<UrlConfiguration>()!;
                 options.Address = new Uri(urlsConfiguration.GooglePlayAppCheckerServiceUrl);
             });
         
         services.AddGrpcClient<AppCheckerService.AppCheckerServiceClient>(StoreType.AppStore.ToString(),
             options =>
             {
-                var urlsConfiguration = configuration.Get<UrlConfiguration>()!;
+                var urlsConfiguration = configuration.GetSection(UrlsConfigurationPrefix).Get<UrlConfiguration>()!;
                 options.Address = new Uri(urlsConfiguration.AppStoreAppCheckerServiceUrl);
             });
+
+        services.AddScoped<IExternalGooglePlayService, ExternalGooglePlayService>();
+        services.AddScoped<IExternalAppStoreService, ExternalAppStoreService>();
 
         services.AddMapper<ApplicationModelMapperFactory>();
 

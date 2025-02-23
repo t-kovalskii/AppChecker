@@ -7,6 +7,7 @@ using AppAvailabilityTracker.Services.AppChecker.Web.Services;
 
 using AppAvailabilityTracker.Shared.Domain.Configuration;
 using AppAvailabilityTracker.Shared.EventBus.Extensions;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,25 +26,6 @@ builder.Services.AddEventBus(builder.Configuration)
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 app.MapGrpcService<AvailabilityCheckerService>();
-
-app.MapGet("/", async (IAvailabilityChecksRepository availabilityChecksRepository) =>
-{
-    var availabilityChecks = await availabilityChecksRepository.GetAllAsync();
-        
-    return Results.Ok(availabilityChecks.Select(check => new
-    {
-        check.Id,
-        check.ApplicationId,
-        check.AppLink,
-        check.CheckTime
-    }));
-}).WithName("GetAvailabilityChecks");
 
 app.Run();

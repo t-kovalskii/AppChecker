@@ -32,7 +32,7 @@ public class AppStorageController(IAppStorageService appStorageService) : Contro
     }
     
     [HttpPost]
-    public async Task<ActionResult<Ok>> AddApplication(AddApplicationWebRequest webRequest)
+    public async Task<IActionResult> AddApplication(AddApplicationWebRequest webRequest)
     {
         var addApplicationRequest = new AddApplicationRequest
         {
@@ -46,7 +46,7 @@ public class AppStorageController(IAppStorageService appStorageService) : Contro
     }
     
     [HttpDelete]
-    public async Task<ActionResult<Ok>> RemoveApplication(RemoveApplicationWebRequest webRequest)
+    public async Task<IActionResult> RemoveApplication(RemoveApplicationWebRequest webRequest)
     {
         var removeApplicationRequest = new RemoveApplicationRequest
         {
